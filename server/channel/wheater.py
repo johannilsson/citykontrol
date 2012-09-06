@@ -36,6 +36,12 @@ class Wheater(object):
                 if ele is not None:
                     v = ele.attrib.get('percent')
                     data['cloudiness'] = self.normalize(v, 0, 100)
+            if 'pressure' not in data:
+                ele = location_ele.find('pressure')
+                if ele is not None:
+                    v = ele.attrib.get('value')
+                    data['pressure'] = self.normalize(v, 700, 1500)
+
 
 
 

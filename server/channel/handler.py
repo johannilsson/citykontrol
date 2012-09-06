@@ -15,7 +15,9 @@ def status(name):
     if not lat or not lon:
         abort()
 
-    w = wheater.Wheater()
-    d = w.fetch(lat, lon)
+    d = {}
+    if name == 'wheater':
+        w = wheater.Wheater()
+        d = w.fetch(lat, lon)
 
     return d
