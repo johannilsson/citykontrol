@@ -1,22 +1,22 @@
-citykontrol
+
+           .__  __            __                 __                .__   
+      ____ |__|/  |_ ___.__. |  | ______   _____/  |________  ____ |  |  
+    _/ ___\|  \   __<   |  | |  |/ /  _ \ /    \   __\_  __ \/  _ \|  |  
+    \  \___|  ||  |  \___  | |    <  <_> )   |  \  |  |  | \(  <_> )  |__
+     \___  >__||__|  / ____| |__|_ \____/|___|  /__|  |__|   \____/|____/
+         \/          \/           \/          \/                         
+                                                        @possan @johanni
+
+City Kontrol
 ===========
 
-## Server 
+<http://citykontrol.loopfools.com/>
 
-    mkvirtualenv audiokontrol
-    pip install -r requirements.xml
-    python app.py
+Drone synth based on weather data from yr.no and the google geocode api.
+
+By [@possan](http://twitter.com/possan) and [@johanni](http://twitter.com/johanni) at data hack fest.
+
+Hack and fork it at
+[github](http://github.com/johannilsson/citykontrol).
 
 
-
-## DATA!!!!1
-
-*   Stockholm
-
-    http://localhost:8888/channel/wheater/?lat=59.30148&lon=18.00448
-*   Amsterdam
-
-    http://localhost:8888/channel/wheater/?lat=52.371407&lon=4.88744
-*   New York
-
-    http://neon.local:8888/channel/wheater/?lat=40.734771&lon=-74.005486
