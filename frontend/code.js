@@ -74,7 +74,7 @@ function setStatus(msg) {
 		$('#status').text(msg);
 		setTimeout(function() {
 			$('#status').text('');
-		}, 1000)
+		}, 1000);
 		// console.log('show throbber', msg);
 	} else {
 		$('#status').text('');
@@ -85,16 +85,18 @@ function setStatus(msg) {
 function gotoLocation(str) {
 	setStatus('Looking up '+str);
 	console.log('goto location', str);
-	var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + 
-	encodeURIComponent(str) + '&sensor=false&callback=?';
 
-	// url = 'https://maps.googleapis.com/maps/api/js/GeocodeService.Search?4sstockholm&7sUS&9sen-US&callback=?'
+	var url = 'http://citykontrol.loopfools.com/api/geocode/' + 
+		encodeURIComponent(str);
 
 	$.getJSON(
 	  url,
 	  function(data) {
-	  	console.log('got geo data', data);
 	  	setStatus('Found it!');
+	  	console.log('got geo data', data);
+	  	var c = data.results[0].geometry.location;
+	  	console.log('lat long', c);
+	  	gotoCoordinate(c.lat, c.lng);
 		updateData();
 	  }
 	);
