@@ -1,0 +1,4 @@
+bottle==0.10.11
+lxml==3.0alpha2
+requests==0.14.0
+wsgiref==0.1.2

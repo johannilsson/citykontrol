@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
-from bottle import Bottle, request, response
+from bottle import Bottle, request, response, abort
 
-import requests
-import lxml
-
+import wheater
 
 
 channel_app = Bottle()
@@ -11,14 +9,13 @@ channel_app = Bottle()
 @channel_app.route('/:name/')
 def status(name):
 
-    # http://api.met.no/weatherapi/locationforecastlts/1.1/
-    # ?lat=60.10;lon=9.58;msl=70
-    payload = {'lat': '60.10;lon=9.58;msl=70'}
-    #r = requests.get("http://httpbin.org/get", params=payload)
-    r = requests.get('http://api.met.no/weatherapi/locationforecastlts/1.1/?lat=60.10;lon=9.58;msl=70')
+    lat = request.GET.get('lat', '60.10')
+    lon = request.GET.get('lon', '9.58')
 
-    print r.text
+    if not lat or not lon:
+        abort()
 
-    return {
-        'status': name
-    }
+    w = wheater.Wheater()
+    d = w.fetch(lat, lon)
+
+    return d
