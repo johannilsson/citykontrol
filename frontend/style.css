@@ -1,12 +1,14 @@
 body {
 	background-color: #222;
+	background-image: url(asfalt.png);
 	overflow: none;
 	font-family: Trebuchet MS, Helvetica, Arial;
 	color: #aaa;
+	text-shadow: 0 2px 3px #000;
 }
 
 a {
-	color: #f70;
+	color: #f80;
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -24,7 +26,7 @@ a {
 	width: 700px;
 	height: 200px;
 	right: -350px;
-	bottom: -120px;
+	bottom: -70px;
 	text-align: center;
 }
 
@@ -36,7 +38,7 @@ a {
 
 h1 {
 	font-size: 50pt;
-	line-height: 40pt;
+	line-height: 70pt;
 	margin: 0;
 	font-family: Helvetica;
 	font-weight: bold;
@@ -44,6 +46,31 @@ h1 {
 	color: #fff;
 }
 
+p {
+	margin: 0 0 10px 0;
+}
+
 input#q {
 	font-size: 20pt;
+	border: 0;
+	outline: 0;
+	border-radius: 5px;
+	padding: 10px;
+	border: 1px solid #fff;
+	background-color: #000;
+	color: #fff;
 }
+
+p#status {
+	position: absolute;
+	top: -50px;
+	width: 700px;
+	text-align: center;
+}
+
+a#spoon {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
