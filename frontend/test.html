@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
-<script>
+	<script src="zepto.js"></script>
+	<script>
 
 	var Mixer = function(elementid) {
 		this.element = document.getElementById(elementid);
@@ -37,6 +39,38 @@
 	}
 
 	var m1, m2, m3, m4, m5;
+	var lat, lon;
+
+	function setStatus(msg) {
+		if (msg) {
+			console.log('show throbber', msg);
+		} else {
+			console.log('hide throbber');
+		}
+	}
+
+	function gotoLocation(str) {
+		setStatus('Looking up '+str);
+		console.log('goto location', str);
+		var url = 'http://maps.googleapis.com/maps/api/geocode/json?address='+encodeURIComponent(str)+'&sensor=false';
+		$.ajax({
+		  type: 'GET',
+		  url: url,
+		  dataType: 'json',
+		  timeout: 300,
+		  success: function(data){
+		  	console.log(data);
+		  	setStatus('Found it!');
+		  },
+		  error: function(xhr, type){
+		    setStatus('Failed');
+		  }
+		})
+	}
+
+	function gotoCoordinate(lat, lon) {
+		console.log('goto coordinate', lat, lon);
+	}
 
 	function init(){
 		m1 = new Mixer('a1');
@@ -45,23 +79,55 @@
 		m4 = new Mixer('a4');
 		m5 = new Mixer('a5');
 
-		var a = document.getElementById('starter');
-		a.addEventListener('click', function() {
+	//	var a = document.getElementById('starter');
+	//	a.addEventListener('click', function() {
 			m1.play();
 			m2.play();
 			m3.play();
 			m4.play();
 			m5.play();
+	//	});
+
+	//	var b = document.getElementById('stopper');
+	//	b.addEventListener('click', function() {
+	//		m1.stop();
+	//		m2.stop();
+	//		m3.stop();
+	//		m4.stop();
+	//		m5.stop();
+	//	});
+
+		var c = document.getElementById('q');
+		c.addEventListener('change', function() {
+			gotoLocation(c.value);
 		});
 
-		var b = document.getElementById('stopper');
-		b.addEventListener('click', function() {
-			m1.stop();
-			m2.stop();
-			m3.stop();
-			m4.stop();
-			m5.stop();
+		var d = document.getElementById('shortcuts');
+		d.addEventListener('click', function(e) {
+			console.log('clicketi', e);
+			var anch = e.srcElement;
+			if (anch && anch.tagName == 'A') {
+				gotoLocation(anch.innerText);
+			}
 		});
+
+		var e = document.getElementById('here');
+		e.addEventListener('click', function() {
+			// check location
+			if (navigator.geolocation) {
+				setStatus('Finding your location...');
+				navigator.geolocation.getCurrentPosition(function(position) {
+					setStatus('Got ya!');
+					console.log('got location.', position.coords.latitude, position.coords.longitude);
+				}, function(e) {
+					setStatus('Failed to get your location');
+				});
+			} else {
+				setStatus('Not supported.');
+			}
+		});
+
+
 
 		setInterval(function() {
 			// update datasource 1
@@ -87,18 +153,33 @@
 </head>
 <body onload="init()">
 
+	<h1>city.kontrol</h1>
+
+	<p>
+		<input type="text" id="q"></input>
+		<a id="here">My location</a>
+	</p>
+
+	<p id="shortcuts">
+		<a href="#">Stockholm</a> |
+		<a href="#">Amsterdam</a> |
+		<a href="#">Berlin</a> |
+		<a href="#">New York</a> |
+		<a href="#">San Francisco</a>
+	</p>
+
+	<br/>
+
 	<input type="text" id="vol1"></input>
 	<br/>
 
-	<button id="starter">START</button>
-	<button id="stopper">STOP</button>
-	<br/>
-
-	<audio id="a1" src="a1-faded.ogg" loop controls preload></audio><br/>
-	<audio id="a2" src="a2-faded.ogg" loop controls preload></audio><br/>
-	<audio id="a3" src="a3-faded.ogg" loop controls preload></audio><br/>
-	<audio id="a4" src="a4-faded.ogg" loop controls preload></audio><br/>
-	<audio id="a5" src="a5-faded.ogg" loop controls preload></audio><br/>
+	<div id="audios">
+		<audio id="a1" src="a1-faded.ogg" loop controls preload></audio><br/>
+		<audio id="a2" src="a2-faded.ogg" loop controls preload></audio><br/>
+		<audio id="a3" src="a3-faded.ogg" loop controls preload></audio><br/>
+		<audio id="a4" src="a4-faded.ogg" loop controls preload></audio><br/>
+		<audio id="a5" src="a5-faded.ogg" loop controls preload></audio><br/>
+	</div>
 
 </body>
 </html>
