@@ -1,7 +1,7 @@
 body {
 	background-color: #222;
 	background-image: url(asfalt.png);
-	overflow: none;
+	overflow: hidden;
 	font-family: Trebuchet MS, Helvetica, Arial;
 	color: #aaa;
 	text-shadow: 0 2px 3px #000;
@@ -32,8 +32,8 @@ a {
 
 #audios {
 	position: absolute;
-	left: -1000px;
-	top: -1000px;
+	right: -500px;
+	top: 0px;
 }
 
 h1 {

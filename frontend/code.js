@@ -1,6 +1,10 @@
 
 var Mixer = function(elementid) {
 	this.element = document.getElementById(elementid);
+	this.element.addEventListener('ended', function() {
+		this.currentTime = 0;
+		this.play();
+	}, false);
 	this.targetvalue = 0;
 	this.currentvalue = 0;
 };
@@ -33,7 +37,7 @@ Mixer.prototype.play = function() {
 
 Mixer.prototype.stop = function() {
 	this.element.pause();
-}
+};
 
 var m1, m2, m3, m4, m5;
 var lat=58, lon=18;
