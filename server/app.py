@@ -1,4 +1,4 @@
-from bottle import route, run, debug, Bottle, request, abort
+from bottle import route, run, debug, Bottle, request, abort, static_file
 from channel.handler import channel_app
 
 app = Bottle()
@@ -11,9 +11,9 @@ def root():
 def main():
     run(reloader=True, app=app, host='localhost', port=8888)
 
-#@app.route('/<path:path>')
-#def static(path):
-#    return static_file(path, '_build/')
+@app.route('/<path:path>')
+def static(path):
+    return static_file(path, '../frontend/')
 
 if __name__ == "__main__":
     main()
