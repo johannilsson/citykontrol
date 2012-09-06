@@ -2,18 +2,103 @@
 <head>
 <script>
 
-function init(){
-	var a1 = document.getElementById('a1');
-	console.log(a1);
-	a1.setAttribute('src', 'a1.ogg');
-	a1.play();
-}
+	var Mixer = function(elementid) {
+		this.element = document.getElementById(elementid);
+		this.targetvalue = 0;
+		this.currentvalue = 0;
+	};
+
+	Mixer.prototype.update = function(value) {
+		this.targetvalue = value;
+		// console.log('update mixer to value', value );
+	};
+
+	Mixer.prototype.tick = function() {
+		this.currentvalue += (this.targetvalue - this.currentvalue) / 27.0;
+		// console.log('current value:', this.currentvalue, this.targetvalue);
+		this.element.volume = this.currentvalue / 100.0;
+	};
+
+	Mixer.prototype.start = function() {
+		var that = this;
+		setInterval(function() {
+			that.tick();
+		}, 20);
+	};
+
+	Mixer.prototype.play = function() {
+		this.element.play();
+		if (this.element.duration)
+			this.element.currentTime = Math.random() * this.element.duration;
+	};
+
+	Mixer.prototype.stop = function() {
+		this.element.pause();
+	}
+
+	var m1, m2, m3, m4, m5;
+
+	function init(){
+		m1 = new Mixer('a1');
+		m2 = new Mixer('a2');
+		m3 = new Mixer('a3');
+		m4 = new Mixer('a4');
+		m5 = new Mixer('a5');
+
+		var a = document.getElementById('starter');
+		a.addEventListener('click', function() {
+			m1.play();
+			m2.play();
+			m3.play();
+			m4.play();
+			m5.play();
+		});
+
+		var b = document.getElementById('stopper');
+		b.addEventListener('click', function() {
+			m1.stop();
+			m2.stop();
+			m3.stop();
+			m4.stop();
+			m5.stop();
+		});
+
+		setInterval(function() {
+			// update datasource 1
+			m1.update(Math.random() * 100);
+			m2.update(Math.random() * 100);
+			m3.update(Math.random() * 100);
+		}, 3500);
+
+		setInterval(function() {
+			// update datasource 2
+			m4.update(Math.random() * 100);
+			m5.update(Math.random() * 100);
+		}, 3200);
+
+		m1.start();
+		m2.start();
+		m3.start();
+		m4.start();
+		m5.start();
+	}
 
 </script>
 </head>
 <body onload="init()">
 
-<audio id="a1" src=""></audio>
+	<input type="text" id="vol1"></input>
+	<br/>
+
+	<button id="starter">START</button>
+	<button id="stopper">STOP</button>
+	<br/>
+
+	<audio id="a1" src="a1-faded.ogg" loop controls preload></audio><br/>
+	<audio id="a2" src="a2-faded.ogg" loop controls preload></audio><br/>
+	<audio id="a3" src="a3-faded.ogg" loop controls preload></audio><br/>
+	<audio id="a4" src="a4-faded.ogg" loop controls preload></audio><br/>
+	<audio id="a5" src="a5-faded.ogg" loop controls preload></audio><br/>
 
 </body>
 </html>
