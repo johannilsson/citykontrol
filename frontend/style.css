@@ -1,0 +1,49 @@
+body {
+	background-color: #222;
+	overflow: none;
+	font-family: Trebuchet MS, Helvetica, Arial;
+	color: #aaa;
+}
+
+a {
+	color: #f70;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.wrap1 {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 50%;
+	height: 50%;
+}
+
+.wrap2 {
+	position: absolute;
+	width: 700px;
+	height: 200px;
+	right: -350px;
+	bottom: -120px;
+	text-align: center;
+}
+
+#audios {
+	position: absolute;
+	left: -1000px;
+	top: -1000px;
+}
+
+h1 {
+	font-size: 50pt;
+	line-height: 40pt;
+	margin: 0;
+	font-family: Helvetica;
+	font-weight: bold;
+	letter-spacing: -5px;
+	color: #fff;
+}
+
+input#q {
+	font-size: 20pt;
+}

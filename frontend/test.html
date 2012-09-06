@@ -1,177 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="zepto.js"></script>
-	<script>
-
-	var Mixer = function(elementid) {
-		this.element = document.getElementById(elementid);
-		this.targetvalue = 0;
-		this.currentvalue = 0;
-	};
-
-	Mixer.prototype.update = function(value) {
-		this.targetvalue = value;
-		// console.log('update mixer to value', value );
-	};
-
-	Mixer.prototype.tick = function() {
-		this.currentvalue += (this.targetvalue - this.currentvalue) / 27.0;
-		// console.log('current value:', this.currentvalue, this.targetvalue);
-		this.element.volume = this.currentvalue / 100.0;
-	};
-
-	Mixer.prototype.start = function() {
-		var that = this;
-		setInterval(function() {
-			that.tick();
-		}, 20);
-	};
-
-	Mixer.prototype.play = function() {
-		this.element.play();
-		if (this.element.duration)
-			this.element.currentTime = Math.random() * this.element.duration;
-	};
-
-	Mixer.prototype.stop = function() {
-		this.element.pause();
-	}
-
-	var m1, m2, m3, m4, m5;
-	var lat, lon;
-
-	function setStatus(msg) {
-		if (msg) {
-			console.log('show throbber', msg);
-		} else {
-			console.log('hide throbber');
-		}
-	}
-
-	function gotoLocation(str) {
-		setStatus('Looking up '+str);
-		console.log('goto location', str);
-		var url = 'http://maps.googleapis.com/maps/api/geocode/json?address='+encodeURIComponent(str)+'&sensor=false';
-		$.ajax({
-		  type: 'GET',
-		  url: url,
-		  dataType: 'json',
-		  timeout: 300,
-		  success: function(data){
-		  	console.log(data);
-		  	setStatus('Found it!');
-		  },
-		  error: function(xhr, type){
-		    setStatus('Failed');
-		  }
-		})
-	}
-
-	function gotoCoordinate(lat, lon) {
-		console.log('goto coordinate', lat, lon);
-	}
-
-	function init(){
-		m1 = new Mixer('a1');
-		m2 = new Mixer('a2');
-		m3 = new Mixer('a3');
-		m4 = new Mixer('a4');
-		m5 = new Mixer('a5');
-
-	//	var a = document.getElementById('starter');
-	//	a.addEventListener('click', function() {
-			m1.play();
-			m2.play();
-			m3.play();
-			m4.play();
-			m5.play();
-	//	});
-
-	//	var b = document.getElementById('stopper');
-	//	b.addEventListener('click', function() {
-	//		m1.stop();
-	//		m2.stop();
-	//		m3.stop();
-	//		m4.stop();
-	//		m5.stop();
-	//	});
-
-		var c = document.getElementById('q');
-		c.addEventListener('change', function() {
-			gotoLocation(c.value);
-		});
-
-		var d = document.getElementById('shortcuts');
-		d.addEventListener('click', function(e) {
-			console.log('clicketi', e);
-			var anch = e.srcElement;
-			if (anch && anch.tagName == 'A') {
-				gotoLocation(anch.innerText);
-			}
-		});
-
-		var e = document.getElementById('here');
-		e.addEventListener('click', function() {
-			// check location
-			if (navigator.geolocation) {
-				setStatus('Finding your location...');
-				navigator.geolocation.getCurrentPosition(function(position) {
-					setStatus('Got ya!');
-					console.log('got location.', position.coords.latitude, position.coords.longitude);
-				}, function(e) {
-					setStatus('Failed to get your location');
-				});
-			} else {
-				setStatus('Not supported.');
-			}
-		});
-
-
-
-		setInterval(function() {
-			// update datasource 1
-			m1.update(Math.random() * 100);
-			m2.update(Math.random() * 100);
-			m3.update(Math.random() * 100);
-		}, 3500);
-
-		setInterval(function() {
-			// update datasource 2
-			m4.update(Math.random() * 100);
-			m5.update(Math.random() * 100);
-		}, 3200);
-
-		m1.start();
-		m2.start();
-		m3.start();
-		m4.start();
-		m5.start();
-	}
-
-</script>
+	<link rel="stylesheet" href="style.css" />
+	<script src="jquery-1.8.1.min.js"></script>
+	<script src="code.js"></script>
 </head>
 <body onload="init()">
+	<div class="wrap1">
+		<div class="wrap2">
+			<h1>{city.kontrol}</h1>
 
-	<h1>city.kontrol</h1>
+			<p>
+				Type the name of a city or location:<br/>
+				<input type="text" id="q"></input>
+			</p>
+			<p>
+				<a id="here">My location</a> |
+				<span id="shortcuts">
+					<a href="#" data-lat="59.331789" data-lon="18.058674">Stockholm</a> |
+					<a href="#" data-lat="52.371407" data-lon="4.897104">Amsterdam</a> |
+					<a href="#" data-lat="52.522906" data-lon="13.391544">Berlin</a> |
+					<a href="#" data-lat="40.713956" data-lon="-73.990379">New York</a> |
+					<a href="#" data-lat="37.773157" data-lon="-122.414183">San Francisco</a>
+				</span>
+			</p>
 
-	<p>
-		<input type="text" id="q"></input>
-		<a id="here">My location</a>
-	</p>
-
-	<p id="shortcuts">
-		<a href="#">Stockholm</a> |
-		<a href="#">Amsterdam</a> |
-		<a href="#">Berlin</a> |
-		<a href="#">New York</a> |
-		<a href="#">San Francisco</a>
-	</p>
-
-	<br/>
-
-	<input type="text" id="vol1"></input>
-	<br/>
+			<p id="status">Loading...</p>
+		</div>
+	</div>
 
 	<div id="audios">
 		<audio id="a1" src="a1-faded.ogg" loop controls preload></audio><br/>
