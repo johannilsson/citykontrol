@@ -14,7 +14,8 @@ class Wheater(object):
         return int(float(value-low1)/(high1-low1)*(high2-low2)+low2)
 
     def fetch(self, lat, lon):
-        r = requests.get('http://api.met.no/weatherapi/locationforecastlts/1.1/?lat=60.10;lon=9.58;msl=70')
+        u = 'http://api.met.no/weatherapi/locationforecastlts/1.1/?lat={0};lon={1};msl=70'.format(lat, lon)
+        r = requests.get(u)
         root = etree.fromstring(r.text)
 
         data = {}
@@ -25,7 +26,7 @@ class Wheater(object):
                 ele = location_ele.find('temperature')
                 if ele is not None:
                     v = ele.attrib.get('value')
-                    data['temperature'] = self.normalize(v, -10, 20)
+                    data['temperature'] = self.normalize(v, -20, 30)
             if 'wind_direction' not in data:
                 ele = location_ele.find('windDirection')
                 if ele is not None:
@@ -41,9 +42,6 @@ class Wheater(object):
                 if ele is not None:
                     v = ele.attrib.get('value')
                     data['pressure'] = self.normalize(v, 700, 1500)
-
-
-
 
 
             #<temperature id="TTT" unit="celcius" value="11.2"/>
